@@ -14,6 +14,7 @@
 		D2DED4721A29E0F40067C316 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4711A29E0F40067C316 /* Images.xcassets */; };
 		D2DED4751A29E0F40067C316 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4731A29E0F40067C316 /* LaunchScreen.xib */; };
 		D2DED4811A29E0F40067C316 /* PKAlertTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED4801A29E0F40067C316 /* PKAlertTests.m */; };
+		D2DED48D1A29E19E0067C316 /* PKAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED48C1A29E19E0067C316 /* PKAlert.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		D2DED47A1A29E0F40067C316 /* PKAlertTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PKAlertTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2DED47F1A29E0F40067C316 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2DED4801A29E0F40067C316 /* PKAlertTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKAlertTests.m; sourceTree = "<group>"; };
+		D2DED48B1A29E19E0067C316 /* PKAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKAlert.h; sourceTree = "<group>"; };
+		D2DED48C1A29E19E0067C316 /* PKAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKAlert.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +66,8 @@
 		D2DED4581A29E0F40067C316 = {
 			isa = PBXGroup;
 			children = (
-				D2DED4631A29E0F40067C316 /* PKAlert */,
+				D2DED48A1A29E1610067C316 /* PKAlert */,
+				D2DED4631A29E0F40067C316 /* PKAlertSample */,
 				D2DED47D1A29E0F40067C316 /* PKAlertTests */,
 				D2DED4621A29E0F40067C316 /* Products */,
 			);
@@ -78,7 +82,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D2DED4631A29E0F40067C316 /* PKAlert */ = {
+		D2DED4631A29E0F40067C316 /* PKAlertSample */ = {
 			isa = PBXGroup;
 			children = (
 				D2DED4681A29E0F40067C316 /* AppDelegate.h */,
@@ -90,7 +94,7 @@
 				D2DED4731A29E0F40067C316 /* LaunchScreen.xib */,
 				D2DED4641A29E0F40067C316 /* Supporting Files */,
 			);
-			path = PKAlert;
+			path = PKAlertSample;
 			sourceTree = "<group>";
 		};
 		D2DED4641A29E0F40067C316 /* Supporting Files */ = {
@@ -117,6 +121,15 @@
 				D2DED47F1A29E0F40067C316 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D2DED48A1A29E1610067C316 /* PKAlert */ = {
+			isa = PBXGroup;
+			children = (
+				D2DED48B1A29E19E0067C316 /* PKAlert.h */,
+				D2DED48C1A29E19E0067C316 /* PKAlert.m */,
+			);
+			path = PKAlert;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +235,7 @@
 				D2DED46D1A29E0F40067C316 /* ViewController.m in Sources */,
 				D2DED46A1A29E0F40067C316 /* AppDelegate.m in Sources */,
 				D2DED4671A29E0F40067C316 /* main.m in Sources */,
+				D2DED48D1A29E19E0067C316 /* PKAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +359,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = PKAlert/Info.plist;
+				INFOPLIST_FILE = PKAlertSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -355,7 +370,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = PKAlert/Info.plist;
+				INFOPLIST_FILE = PKAlertSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
