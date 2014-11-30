@@ -31,7 +31,19 @@
 @interface PKAlert : UIViewController
 
 
-#pragma mark - call methods
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText;
+#pragma mark - call methods (show)
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items;
+
+#pragma mark - call methods (generate)
++ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
++ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor;
+
+
+@end
+
+
+@interface PKAlertButton : UIButton
+
+- (instancetype)addActionBlock:(void(^)())action forControlEvents:(UIControlEvents)controlEvents;
 
 @end

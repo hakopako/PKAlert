@@ -13,12 +13,14 @@
 #import "PKAlert.h"
 #import <QuartzCore/QuartzCore.h>
 
+@class PKAlertButton;
+
+typedef void (^CloseAlertBlock)(void);
 @interface PKAlert ()
 {
-    /**
-     * in order to avoid that instances are deallocated after being added as a subview.
-     */
+    CloseAlertBlock closeAlertBlock;
     PKAlert *pkAlert;
+    NSArray *pkAlertButtons;
     
     CGRect screenRect;
     float width;
@@ -26,12 +28,14 @@
     float posX;
     float posY;
     float margin;
+    float itemWidth;
     float itemHeight;
 }
 
 @property (nonatomic) PKAlert *pkAlert;
+@property (nonatomic) NSArray *pkAlertButtons;
 
-- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText;
+- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items;
 - (void)cancelButtonDown;
 
 @end
@@ -40,6 +44,7 @@
 @implementation PKAlert
 
 @synthesize pkAlert;
+@synthesize pkAlertButtons;
 
 - (instancetype)init
 {
@@ -52,6 +57,7 @@
         posX = (screenRect.size.width - width)/2;
         posY = (screenRect.size.height - height)/2;
         margin = 8;
+        itemWidth = width-margin*2;
         itemHeight = 44;
         
     }
@@ -76,12 +82,12 @@
 - (UILabel*)generateTitleLabelWithString:(NSString*)title
 {
     if(title == nil){
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, width-margin*2, itemHeight/2)];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight/2)];
         titleLabel.text = @"";
         return titleLabel;
     }
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, width-margin*2, itemHeight)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
     titleLabel.text = title;
     titleLabel.font = [UIFont boldSystemFontOfSize:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -89,10 +95,51 @@
     return titleLabel;
 }
 
+- (UILabel*)generateTextLabelWithString:(NSString*)text
+{
+    if(text == nil){
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight/2)];
+        textLabel.text = @"";
+        return textLabel;
+    }
+    
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
+    textLabel.numberOfLines = 0;
+    textLabel.text = text;
+    textLabel.font = [UIFont systemFontOfSize:15];
+    textLabel.textAlignment = NSTextAlignmentCenter;
+    [textLabel sizeToFit];
+    
+    return textLabel;
+}
+
+- (UIView*)generateItems:(NSArray*)items
+{
+    NSMutableArray *itemsArray = [[NSMutableArray alloc]init];
+    for(int i=0; i<[items count]; i++){
+        if(![[items objectAtIndex:i] isKindOfClass:[PKAlertButton class]]){
+            continue;
+        }
+        PKAlertButton *button = [items objectAtIndex:i];
+        button.frame = CGRectMake(0, (margin+itemHeight)*[itemsArray count], itemWidth, itemHeight);
+        
+        [itemsArray addObject:button];
+    }
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, itemWidth, (margin+itemHeight)*[itemsArray count])];
+    
+    for(int i=0; i<[itemsArray count]; i++){
+        [view addSubview:[itemsArray objectAtIndex:i]];
+    }
+    
+    return view;
+}
+
+
 - (UIButton*)generateCancelButtonWithTitle:(NSString*)title
 {
     if(title == nil){ title = @"cancel";}
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, width-margin*2, itemHeight)];
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
     [cancelButton addTarget:self
                      action:@selector(cancelButtonDown)
            forControlEvents:UIControlEventTouchUpInside];
@@ -104,29 +151,12 @@
     return cancelButton;
 }
 
-- (UILabel*)generateTextLabelWithString:(NSString*)text
+- (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(UIView*)itemView
 {
-    if(text == nil){
-        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, width-margin*2, itemHeight/2)];
-        textLabel.text = @"";
-        return textLabel;
-    }
-    
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, width-margin*2, itemHeight)];
-    textLabel.numberOfLines = 0;
-    textLabel.text = text;
-    textLabel.font = [UIFont systemFontOfSize:15];
-    textLabel.textAlignment = NSTextAlignmentCenter;
-    [textLabel sizeToFit];
-    
-    return textLabel;
-}
-
-- (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton
-{
-    titleLabel.frame = CGRectMake(margin, margin, width-margin*2, titleLabel.frame.size.height);
-    textLabel.frame = CGRectMake(margin, margin+titleLabel.frame.size.height, width-margin*2, textLabel.frame.size.height);
-    cancelButton.frame = CGRectMake(margin, textLabel.frame.origin.y + textLabel.frame.size.height + margin*2, width-margin*2, cancelButton.frame.size.height);
+    titleLabel.frame = CGRectMake(margin, margin, itemWidth, titleLabel.frame.size.height);
+    textLabel.frame = CGRectMake(margin, margin+titleLabel.frame.size.height+margin, itemWidth, textLabel.frame.size.height);
+    itemView.frame = CGRectMake(margin, textLabel.frame.origin.y + textLabel.frame.size.height + margin, itemWidth, itemView.frame.size.height);
+    cancelButton.frame = CGRectMake(margin, itemView.frame.origin.y + itemView.frame.size.height, itemWidth, cancelButton.frame.size.height);
     
     height = cancelButton.frame.origin.y + cancelButton.frame.size.height+margin;
     posY = (screenRect.size.height - height)/2;
@@ -141,24 +171,27 @@
     
     [alertBgView addSubview:titleLabel];
     [alertBgView addSubview:textLabel];
+    [alertBgView addSubview:itemView];
     [alertBgView addSubview:cancelButton];
     
     return alertBgView;
 }
 
 
-- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText
+- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items
 {
     UIView *bgView = [PKAlert generateBackGroundView];
     UIView *alertView = [self generateAlertView:[self generateTitleLabelWithString:title]
                                       textLabel:[self generateTextLabelWithString:text]
-                                   cancelButton:[self generateCancelButtonWithTitle:cancelButtonText]];
+                                   cancelButton:[self generateCancelButtonWithTitle:cancelButtonText]
+                                          items:[self generateItems:items]];
     
     [bgView addSubview:alertView];
     [self.view addSubview:bgView];
     
     NSLog(@"self=>%@", [self class]);
     pkAlert = self;
+    pkAlertButtons = items;
     
     return self;
 }
@@ -172,6 +205,7 @@
                      } completion:^(BOOL finished) {
                          [self.view removeFromSuperview];
                          pkAlert = nil;
+                         pkAlertButtons = nil;
                      }];
 }
 
@@ -195,10 +229,10 @@
 }
 
 
-#pragma mark - call methods
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText
+#pragma mark - call methods (show)
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items
 {
-    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText];
+    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:alert.view];
     
     [UIView animateWithDuration:0.2
@@ -210,7 +244,51 @@
     
 }
 
+#pragma mark - call methods (generate)
++ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type
+{
+    PKAlertButton *button = [[PKAlertButton alloc] init];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+    [button setBackgroundColor:[UIColor lightGrayColor]];
+    button.layer.cornerRadius = 3.0f;
+    return [button addActionBlock:action forControlEvents:UIControlEventTouchUpInside];
+}
 
++ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor
+{
+    return nil;
+}
 
+@end
+
+typedef void (^ActionBlock)(void);
+@interface PKAlertButton()
+{
+    ActionBlock actionBlock;
+}
+
+- (void)callActionBlock;
+
+@end
+
+@implementation PKAlertButton
+
+- (instancetype)addActionBlock:(void(^)())action forControlEvents:(UIControlEvents)controlEvents
+{
+    actionBlock = action;
+    [self addTarget:self action:@selector(callActionBlock) forControlEvents:controlEvents];
+    return self;
+}
+
+- (void)callActionBlock
+{
+    actionBlock();
+}
+
+- (void)dealloc
+{
+    NSLog(@"PKAlertButton is dealloc.");
+}
 
 @end
