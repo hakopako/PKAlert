@@ -3,6 +3,9 @@ PKAlert
 
 Simple and easy alert generator written with objective c
 
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.gif">
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert-SipmleAlert.png">
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert-OptionAlert.png">
 
 ## Usage
 1. Add `PKAlert.h`,`PKAlert.m` to your project.
