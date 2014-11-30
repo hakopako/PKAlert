@@ -17,41 +17,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:YES];
-//    [PKAlert showWithTitle:@"たいとるたいとる" text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" cancelButtonText:@"O K" items:nil];
-    
-    [PKAlert showWithTitle:@"タイトルー"
-                      text:@"hogehogehoghoe"
-          cancelButtonText:@"O K"
-                     items:@[
-//                             [PKAlert generateButtonWithTitle:@"Add"
-//                                                       action:^(){
-//                                                           
-//                                                       }
-//                                                         type:UIButtonTypeSystem
-//                                                    tintColor:[UIColor lightGrayColor]
-//                                                    fontColor:[UIColor whiteColor]],
-                             [PKAlert generateButtonWithTitle:@"Done"
-                                                       action:^(){
-                                                           NSLog(@"done is clicked.");
-                                                       }
-                                                         type:UIButtonTypeSystem],
-                             [PKAlert generateButtonWithTitle:@"hoge"
-                                                       action:^(){
-                                                           NSLog(@"hoge is clicked.");
-                                                       }
-                                                         type:UIButtonTypeSystem]
-                             ]];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)simpleAlertButtonDown:(id)sender {
+    [PKAlert showWithTitle:@"Notice" text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" cancelButtonText:@"O K" items:nil tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]];
+}
+
+- (IBAction)optionAlertButtonDown:(id)sender {
+    [PKAlert showWithTitle:@"Success!!"
+                      text:@"XXXX is completed successfuly.\n check ooooo now!"
+          cancelButtonText:@"Cancel"
+                     items:@[
+                             [PKAlert generateButtonWithTitle:@"Bar"
+                                                       action:^(){
+                                                           NSLog(@"Bar is clicked.");
+                                                       }
+                                                         type:UIButtonTypeSystem],
+                             [PKAlert generateButtonWithTitle:@"Foo"
+                                                       action:^(){
+                                                           NSLog(@"Foo is clicked.");
+                                                       }
+                                                         type:UIButtonTypeSystem]
+                             ]
+                 tintColor:nil];
+}
 @end

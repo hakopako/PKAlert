@@ -9,7 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+{
 
+    __weak IBOutlet UIButton *simpleAlertButton;
+    __weak IBOutlet UIButton *optionAlertButton;
+}
+
+- (IBAction)simpleAlertButtonDown:(id)sender;
+- (IBAction)optionAlertButtonDown:(id)sender;
 
 @end
 

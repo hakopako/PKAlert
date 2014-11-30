@@ -18,10 +18,9 @@
 typedef void (^CloseAlertBlock)(void);
 @interface PKAlert ()
 {
-    CloseAlertBlock closeAlertBlock;
+    __weak CloseAlertBlock closeAlertBlock;
     PKAlert *pkAlert;
     NSArray *pkAlertButtons;
-    
     CGRect screenRect;
     float width;
     float height;
@@ -30,13 +29,17 @@ typedef void (^CloseAlertBlock)(void);
     float margin;
     float itemWidth;
     float itemHeight;
+    float cornerRadius;
+    UIFont *titleFont;
+    UIColor *titleColor;
+    UIFont *textFont;
+    UIColor *textColor;
+    UIFont *buttonFont;
+    UIColor *buttonTitleColor;
 }
 
 @property (nonatomic) PKAlert *pkAlert;
 @property (nonatomic) NSArray *pkAlertButtons;
-
-- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items;
-- (void)cancelButtonDown;
 
 @end
 
@@ -59,14 +62,22 @@ typedef void (^CloseAlertBlock)(void);
         margin = 8;
         itemWidth = width-margin*2;
         itemHeight = 44;
+        cornerRadius = 3.0f;
         
+        titleFont = [UIFont systemFontOfSize:21];
+        titleColor = [[UIColor alloc] initWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f];
+        textFont = [UIFont systemFontOfSize:13];
+        textColor = [[UIColor alloc] initWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f];
+        buttonFont = [UIFont systemFontOfSize:17];
+        buttonTitleColor = [UIColor whiteColor];
+        
+        //NSLog(@"%@ is initialized.", [self class]);
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"viewDidLoad");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,7 +86,7 @@ typedef void (^CloseAlertBlock)(void);
 
 - (void)dealloc
 {
-    NSLog(@"PKAlet dealloc");
+    //NSLog(@"%@ is deallocated.", [self class]);
 }
 
 #pragma mark - instance methods
@@ -89,7 +100,8 @@ typedef void (^CloseAlertBlock)(void);
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
     titleLabel.text = title;
-    titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    titleLabel.font = titleFont;
+    titleLabel.textColor = titleColor;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     
     return titleLabel;
@@ -106,14 +118,15 @@ typedef void (^CloseAlertBlock)(void);
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
     textLabel.numberOfLines = 0;
     textLabel.text = text;
-    textLabel.font = [UIFont systemFontOfSize:15];
+    textLabel.font = textFont;
+    textLabel.textColor = textColor;
     textLabel.textAlignment = NSTextAlignmentCenter;
     [textLabel sizeToFit];
     
     return textLabel;
 }
 
-- (UIView*)generateItems:(NSArray*)items
+- (UIView*)generateItems:(NSArray*)items tintColor:(UIColor*)tintColor
 {
     NSMutableArray *itemsArray = [[NSMutableArray alloc]init];
     for(int i=0; i<[items count]; i++){
@@ -121,7 +134,12 @@ typedef void (^CloseAlertBlock)(void);
             continue;
         }
         PKAlertButton *button = [items objectAtIndex:i];
+        [button addActionTarget:self];
+        [button setTitleColor:buttonTitleColor forState: UIControlStateNormal];
+        [button setBackgroundColor:tintColor];
+        button.titleLabel.font = buttonFont;
         button.frame = CGRectMake(0, (margin+itemHeight)*[itemsArray count], itemWidth, itemHeight);
+        button.layer.cornerRadius = cornerRadius;
         
         [itemsArray addObject:button];
     }
@@ -136,7 +154,7 @@ typedef void (^CloseAlertBlock)(void);
 }
 
 
-- (UIButton*)generateCancelButtonWithTitle:(NSString*)title
+- (UIButton*)generateCancelButtonWithTitle:(NSString*)title tintColor:(UIColor*)tintColor
 {
     if(title == nil){ title = @"cancel";}
     UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
@@ -144,9 +162,10 @@ typedef void (^CloseAlertBlock)(void);
                      action:@selector(cancelButtonDown)
            forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setTitle:title forState:UIControlStateNormal];
-    [cancelButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-    [cancelButton setBackgroundColor:[UIColor lightGrayColor]];
-    cancelButton.layer.cornerRadius = 3.0f;
+    [cancelButton setTitleColor: buttonTitleColor forState: UIControlStateNormal];
+    [cancelButton setBackgroundColor:tintColor];
+    cancelButton.titleLabel.font = buttonFont;
+    cancelButton.layer.cornerRadius = cornerRadius;
     
     return cancelButton;
 }
@@ -154,20 +173,20 @@ typedef void (^CloseAlertBlock)(void);
 - (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(UIView*)itemView
 {
     titleLabel.frame = CGRectMake(margin, margin, itemWidth, titleLabel.frame.size.height);
-    textLabel.frame = CGRectMake(margin, margin+titleLabel.frame.size.height+margin, itemWidth, textLabel.frame.size.height);
-    itemView.frame = CGRectMake(margin, textLabel.frame.origin.y + textLabel.frame.size.height + margin, itemWidth, itemView.frame.size.height);
+    textLabel.frame = CGRectMake(margin, titleLabel.frame.origin.y + titleLabel.frame.size.height + margin, itemWidth, textLabel.frame.size.height + margin);
+    itemView.frame = CGRectMake(margin, margin+textLabel.frame.origin.y + textLabel.frame.size.height + margin, itemWidth, itemView.frame.size.height);
     cancelButton.frame = CGRectMake(margin, itemView.frame.origin.y + itemView.frame.size.height, itemWidth, cancelButton.frame.size.height);
     
     height = cancelButton.frame.origin.y + cancelButton.frame.size.height+margin;
     posY = (screenRect.size.height - height)/2;
     UIView *alertBgView = [[UIView alloc] initWithFrame:CGRectMake(posX, posY, width, height)];
     alertBgView.backgroundColor = [UIColor whiteColor];
-    alertBgView.layer.cornerRadius = 3.0f;
+    alertBgView.layer.cornerRadius = cornerRadius;
     alertBgView.layer.masksToBounds = NO;
-    alertBgView.layer.shadowOffset = CGSizeMake(0, 0);
-    alertBgView.layer.shadowOpacity = 0.1f;
+    alertBgView.layer.shadowOffset = CGSizeMake(0, 8);
+    alertBgView.layer.shadowOpacity = 0.2f;
     alertBgView.layer.shadowColor = [UIColor blackColor].CGColor;
-    alertBgView.layer.shadowRadius = 6.0f;
+    alertBgView.layer.shadowRadius = 8.0f;
     
     [alertBgView addSubview:titleLabel];
     [alertBgView addSubview:textLabel];
@@ -178,18 +197,17 @@ typedef void (^CloseAlertBlock)(void);
 }
 
 
-- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items
+- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor
 {
     UIView *bgView = [PKAlert generateBackGroundView];
     UIView *alertView = [self generateAlertView:[self generateTitleLabelWithString:title]
                                       textLabel:[self generateTextLabelWithString:text]
-                                   cancelButton:[self generateCancelButtonWithTitle:cancelButtonText]
-                                          items:[self generateItems:items]];
+                                   cancelButton:[self generateCancelButtonWithTitle:cancelButtonText tintColor:tintColor]
+                                          items:[self generateItems:items tintColor:tintColor]];
     
     [bgView addSubview:alertView];
     [self.view addSubview:bgView];
     
-    NSLog(@"self=>%@", [self class]);
     pkAlert = self;
     pkAlertButtons = items;
     
@@ -198,8 +216,7 @@ typedef void (^CloseAlertBlock)(void);
 
 - (void)cancelButtonDown
 {
-    NSLog(@"cancelbuttondown is called.");
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.15
                      animations:^{
                          self.view.alpha = 0.0;
                      } completion:^(BOOL finished) {
@@ -207,6 +224,17 @@ typedef void (^CloseAlertBlock)(void);
                          pkAlert = nil;
                          pkAlertButtons = nil;
                      }];
+}
+
+- (void)callActionBlock:(id)sender
+{
+    if(![sender isKindOfClass:[PKAlertButton class]]){
+        return;
+    }
+    
+    PKAlertButton *button = (PKAlertButton*)sender;
+    button.actionBlock();
+    [self cancelButtonDown];
 }
 
 #pragma mark - hoge
@@ -230,12 +258,13 @@ typedef void (^CloseAlertBlock)(void);
 
 
 #pragma mark - call methods (show)
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor *)tintColor
 {
-    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items];
+    if(tintColor == nil){ tintColor = [[UIColor alloc] initWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];}
+    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items tintColor:tintColor];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:alert.view];
     
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.15
                      animations:^{
                          alert.view.alpha = 1.0;
                      } completion:^(BOOL finished) {
@@ -249,46 +278,45 @@ typedef void (^CloseAlertBlock)(void);
 {
     PKAlertButton *button = [[PKAlertButton alloc] init];
     [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-    [button setBackgroundColor:[UIColor lightGrayColor]];
-    button.layer.cornerRadius = 3.0f;
-    return [button addActionBlock:action forControlEvents:UIControlEventTouchUpInside];
+    button.actionBlock = action;
+    button.type = type;
+    return button;
 }
 
-+ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor
-{
-    return nil;
-}
+//+ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor
+//{
+//    return nil;
+//}
 
 @end
 
-typedef void (^ActionBlock)(void);
+
 @interface PKAlertButton()
-{
-    ActionBlock actionBlock;
-}
-
-- (void)callActionBlock;
-
 @end
 
 @implementation PKAlertButton
 
-- (instancetype)addActionBlock:(void(^)())action forControlEvents:(UIControlEvents)controlEvents
+@synthesize actionBlock;
+@synthesize type;
+
+- (instancetype)init
 {
-    actionBlock = action;
-    [self addTarget:self action:@selector(callActionBlock) forControlEvents:controlEvents];
+    self = [super init];
+    if(self){
+        //NSLog(@"%@ is initialized.", [self class]);
+    }
     return self;
 }
 
-- (void)callActionBlock
+- (instancetype)addActionTarget:(id)target
 {
-    actionBlock();
+    [self addTarget:target action:@selector(callActionBlock:) forControlEvents:UIControlEventTouchUpInside];
+    return self;
 }
 
 - (void)dealloc
 {
-    NSLog(@"PKAlertButton is dealloc.");
+    //NSLog(@"%@ is deallocated.", [self class]);
 }
 
 @end

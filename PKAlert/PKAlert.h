@@ -32,18 +32,25 @@
 
 
 #pragma mark - call methods (show)
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items;
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor;
 
 #pragma mark - call methods (generate)
 + (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
-+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor;
+//+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor;
 
 
 @end
 
-
+typedef void (^ActionBlock)(void);
 @interface PKAlertButton : UIButton
+{
+    __weak ActionBlock actionBlock;
+    UIButtonType type;
+}
 
-- (instancetype)addActionBlock:(void(^)())action forControlEvents:(UIControlEvents)controlEvents;
+@property (weak) ActionBlock actionBlock;
+@property (nonatomic) UIButtonType type;
+
+- (instancetype)addActionTarget:(id)target;
 
 @end
