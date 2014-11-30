@@ -15,6 +15,9 @@
 		D2DED4751A29E0F40067C316 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4731A29E0F40067C316 /* LaunchScreen.xib */; };
 		D2DED4811A29E0F40067C316 /* PKAlertTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED4801A29E0F40067C316 /* PKAlertTests.m */; };
 		D2DED48D1A29E19E0067C316 /* PKAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED48C1A29E19E0067C316 /* PKAlert.m */; };
+		D2DED4CC1A2B3D580067C316 /* PKAlert-OptionAlert.png in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4C91A2B3D580067C316 /* PKAlert-OptionAlert.png */; };
+		D2DED4CD1A2B3D580067C316 /* PKAlert-SipmleAlert.png in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4CA1A2B3D580067C316 /* PKAlert-SipmleAlert.png */; };
+		D2DED4CE1A2B3D580067C316 /* PKAlert.mov in Resources */ = {isa = PBXBuildFile; fileRef = D2DED4CB1A2B3D580067C316 /* PKAlert.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,9 @@
 		D2DED4801A29E0F40067C316 /* PKAlertTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKAlertTests.m; sourceTree = "<group>"; };
 		D2DED48B1A29E19E0067C316 /* PKAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKAlert.h; sourceTree = "<group>"; };
 		D2DED48C1A29E19E0067C316 /* PKAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKAlert.m; sourceTree = "<group>"; };
+		D2DED4C91A2B3D580067C316 /* PKAlert-OptionAlert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PKAlert-OptionAlert.png"; sourceTree = "<group>"; };
+		D2DED4CA1A2B3D580067C316 /* PKAlert-SipmleAlert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PKAlert-SipmleAlert.png"; sourceTree = "<group>"; };
+		D2DED4CB1A2B3D580067C316 /* PKAlert.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = PKAlert.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,7 @@
 				D2DED4711A29E0F40067C316 /* Images.xcassets */,
 				D2DED4731A29E0F40067C316 /* LaunchScreen.xib */,
 				D2DED4641A29E0F40067C316 /* Supporting Files */,
+				D2DED4C81A2B3D3A0067C316 /* images */,
 			);
 			path = PKAlertSample;
 			sourceTree = "<group>";
@@ -130,6 +137,16 @@
 				D2DED48C1A29E19E0067C316 /* PKAlert.m */,
 			);
 			path = PKAlert;
+			sourceTree = "<group>";
+		};
+		D2DED4C81A2B3D3A0067C316 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				D2DED4C91A2B3D580067C316 /* PKAlert-OptionAlert.png */,
+				D2DED4CA1A2B3D580067C316 /* PKAlert-SipmleAlert.png */,
+				D2DED4CB1A2B3D580067C316 /* PKAlert.mov */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,9 +229,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2DED4CE1A2B3D580067C316 /* PKAlert.mov in Resources */,
+				D2DED4CD1A2B3D580067C316 /* PKAlert-SipmleAlert.png in Resources */,
 				D2DED4701A29E0F40067C316 /* Main.storyboard in Resources */,
 				D2DED4751A29E0F40067C316 /* LaunchScreen.xib in Resources */,
 				D2DED4721A29E0F40067C316 /* Images.xcassets in Resources */,
+				D2DED4CC1A2B3D580067C316 /* PKAlert-OptionAlert.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +450,7 @@
 				D2DED4861A29E0F40067C316 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D2DED4871A29E0F40067C316 /* Build configuration list for PBXNativeTarget "PKAlertTests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +459,7 @@
 				D2DED4891A29E0F40067C316 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
