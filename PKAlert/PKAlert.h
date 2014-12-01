@@ -28,14 +28,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class PKAlertButton;
 @interface PKAlert : UIViewController
-
 
 #pragma mark - call methods (show)
 + (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor;
 
 #pragma mark - call methods (generate)
-+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
++ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
 //+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor;
 
 

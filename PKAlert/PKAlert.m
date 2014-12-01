@@ -157,17 +157,17 @@ typedef void (^CloseAlertBlock)(void);
 - (UIButton*)generateCancelButtonWithTitle:(NSString*)title tintColor:(UIColor*)tintColor
 {
     if(title == nil){ title = @"cancel";}
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
-    [cancelButton addTarget:self
-                     action:@selector(cancelButtonDown)
-           forControlEvents:UIControlEventTouchUpInside];
-    [cancelButton setTitle:title forState:UIControlStateNormal];
-    [cancelButton setTitleColor: buttonTitleColor forState: UIControlStateNormal];
-    [cancelButton setBackgroundColor:tintColor];
-    cancelButton.titleLabel.font = buttonFont;
-    cancelButton.layer.cornerRadius = cornerRadius;
     
-    return cancelButton;
+    PKAlertButton *button = [PKAlert generateButtonWithTitle:title
+                                                      action:^{}
+                                                        type:UIButtonTypeSystem];
+    [button addActionTarget:self];
+    [button setTitleColor:buttonTitleColor forState: UIControlStateNormal];
+    [button setBackgroundColor:tintColor];
+    button.titleLabel.font = buttonFont;
+    button.frame = CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight);
+    button.layer.cornerRadius = cornerRadius;    
+    return button;
 }
 
 - (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(UIView*)itemView
@@ -214,18 +214,6 @@ typedef void (^CloseAlertBlock)(void);
     return self;
 }
 
-- (void)cancelButtonDown
-{
-    [UIView animateWithDuration:0.15
-                     animations:^{
-                         self.view.alpha = 0.0;
-                     } completion:^(BOOL finished) {
-                         [self.view removeFromSuperview];
-                         pkAlert = nil;
-                         pkAlertButtons = nil;
-                     }];
-}
-
 - (void)callActionBlock:(id)sender
 {
     if(![sender isKindOfClass:[PKAlertButton class]]){
@@ -234,7 +222,15 @@ typedef void (^CloseAlertBlock)(void);
     
     PKAlertButton *button = (PKAlertButton*)sender;
     button.actionBlock();
-    [self cancelButtonDown];
+    
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         self.view.alpha = 0.0;
+                     } completion:^(BOOL finished) {
+                         [self.view removeFromSuperview];
+                         pkAlert = nil;
+                         pkAlertButtons = nil;
+                     }];
 }
 
 #pragma mark - hoge
@@ -312,6 +308,16 @@ typedef void (^CloseAlertBlock)(void);
 {
     [self addTarget:target action:@selector(callActionBlock:) forControlEvents:UIControlEventTouchUpInside];
     return self;
+}
+
+//@override
+- (void)setHighlighted:(BOOL)highlighted {
+    [super setHighlighted:highlighted];
+    
+    if (highlighted) {
+        self.alpha = 0.6;
+    }
+    
 }
 
 - (void)dealloc
