@@ -289,18 +289,13 @@ typedef void (^CloseAlertBlock)(void);
 {
     PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items tintColor:tintColor];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:alert.view];
+    alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.03, 1.03);
     
     [UIView animateWithDuration:0.1
                      animations:^{
                          alert.view.alpha = 1.0;
-                         alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.03, 1.03);
+                         alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
                      } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.05
-                                          animations:^{
-                                              alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
-                                          } completion:^(BOOL finished) {
-                                              
-                                          }];
                      }];
     
 }
