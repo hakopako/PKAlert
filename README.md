@@ -10,7 +10,8 @@ Simple and easy alert generator written with objective c
 2. `#import "PKAlert.h"` 
 3. call method like so
 
-```obj-c:simpleAlert
+```obj-c
+//simpleAlert
 [PKAlert showWithTitle:@"Notice" //NSString or nil
                   text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" //NSString or nil
       cancelButtonText:@"O K" //NSString or nil
@@ -19,7 +20,8 @@ Simple and easy alert generator written with objective c
 ];
 ```
 
-```obj-c:optionAlert
+```obj-c
+//optionAlert
 [PKAlert showWithTitle:@"Success!!"
                   text:@"XXXX is completed successfuly.\n check ooooo now!"
       cancelButtonText:@"Cancel"
