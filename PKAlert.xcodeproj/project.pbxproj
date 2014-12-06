@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D2C215221A32E0C700636E54 /* PKAlert.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D2C215211A32E0C700636E54 /* PKAlert.mp4 */; };
+		D2C215241A32E92100636E54 /* PKAlert.gif in Resources */ = {isa = PBXBuildFile; fileRef = D2C215231A32E92100636E54 /* PKAlert.gif */; };
 		D2DED4671A29E0F40067C316 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED4661A29E0F40067C316 /* main.m */; };
 		D2DED46A1A29E0F40067C316 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED4691A29E0F40067C316 /* AppDelegate.m */; };
 		D2DED46D1A29E0F40067C316 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DED46C1A29E0F40067C316 /* ViewController.m */; };
@@ -29,7 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D2C215211A32E0C700636E54 /* PKAlert.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PKAlert.mp4; sourceTree = "<group>"; };
+		D2C215231A32E92100636E54 /* PKAlert.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = PKAlert.gif; sourceTree = "<group>"; };
 		D2DED4611A29E0F40067C316 /* PKAlert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PKAlert.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2DED4651A29E0F40067C316 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2DED4661A29E0F40067C316 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		D2DED4C81A2B3D3A0067C316 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				D2C215211A32E0C700636E54 /* PKAlert.mp4 */,
+				D2C215231A32E92100636E54 /* PKAlert.gif */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -223,9 +223,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2C215221A32E0C700636E54 /* PKAlert.mp4 in Resources */,
 				D2DED4701A29E0F40067C316 /* Main.storyboard in Resources */,
 				D2DED4751A29E0F40067C316 /* LaunchScreen.xib in Resources */,
+				D2C215241A32E92100636E54 /* PKAlert.gif in Resources */,
 				D2DED4721A29E0F40067C316 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,9 +1,10 @@
 PKAlert
 =======
 
-Simple and easy alert generator written with objective c
+Simple and easy alert generator written with objective c.  
+Target: ios7 or later. 
 
-<video src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.mp4"></video> 
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.gif"/>
 
 ## Usage
 1. Add `PKAlert.h`,`PKAlert.m` to your project.
