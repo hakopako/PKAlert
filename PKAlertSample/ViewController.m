@@ -2,7 +2,7 @@
 //  ViewController.m
 //  PKAlert
 //
-//  Created by shimada on 2014/11/29.
+//  Created by hakopako on 2014/11/29.
 //  Copyright (c) 2014年 hakopako. All rights reserved.
 //
 
@@ -24,7 +24,11 @@
 }
 
 - (IBAction)simpleAlertButtonDown:(id)sender {
-    [PKAlert showWithTitle:@"Notice" text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" cancelButtonText:@"O K" items:nil tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]];
+    [PKAlert showWithTitle:@"Notice"
+                      text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha"
+          cancelButtonText:@"O K"
+                     items:nil
+                 tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]];
 }
 
 - (IBAction)optionAlertButtonDown:(id)sender {
@@ -32,17 +36,17 @@
                       text:@"XXXX is completed successfuly.\n check ooooo now!"
           cancelButtonText:@"Cancel"
                      items:@[
-                             [PKAlert generateButtonWithTitle:@"Bar"
+                             [PKAlert generateButtonWithTitle:@"Bar" //backgoundColor button is generated.
                                                        action:^(){
                                                            NSLog(@"Bar is clicked.");
                                                        }
-                                                         type:UIButtonTypeSystem],
-                             [PKAlert generateButtonWithTitle:@"Foo"
+                                                         type:UIButtonTypeSystem
+                                               backgoundColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]],
+                             [PKAlert generateButtonWithTitle:@"Foo" //tintColor button is generated.
                                                        action:^(){
                                                            NSLog(@"Foo is clicked.");
                                                        }
-                                                         type:UIButtonTypeSystem]
-                             ]
+                                                         type:UIButtonTypeSystem]]
                  tintColor:nil];
 }
 @end

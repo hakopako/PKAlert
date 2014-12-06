@@ -2,7 +2,7 @@
 //  PKAlert.m
 //  PKAlert
 //
-//  Created by shimada on 2014/11/29.
+//  Created by hakopako on 2014/11/29.
 //  Copyright (c) 2014年 hakopako.
 //
 
@@ -22,6 +22,7 @@ typedef void (^CloseAlertBlock)(void);
     PKAlert *pkAlert;
     NSArray *pkAlertButtons;
     CGRect screenRect;
+    float osVersion;
     float width;
     float height;
     float posX;
@@ -36,6 +37,7 @@ typedef void (^CloseAlertBlock)(void);
     UIColor *textColor;
     UIFont *buttonFont;
     UIColor *buttonTitleColor;
+    UIColor *defaultButtonColor;
 }
 
 @property (nonatomic) PKAlert *pkAlert;
@@ -70,6 +72,9 @@ typedef void (^CloseAlertBlock)(void);
         textColor = [[UIColor alloc] initWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f];
         buttonFont = [UIFont systemFontOfSize:17];
         buttonTitleColor = [UIColor whiteColor];
+        defaultButtonColor = [[UIColor alloc] initWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
+        
+        osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
         
         //NSLog(@"%@ is initialized.", [self class]);
     }
@@ -136,7 +141,12 @@ typedef void (^CloseAlertBlock)(void);
         PKAlertButton *button = [items objectAtIndex:i];
         [button addActionTarget:self];
         [button setTitleColor:buttonTitleColor forState: UIControlStateNormal];
-        [button setBackgroundColor:tintColor];
+        
+        // if button already has any color, skip setting background color.
+        if(button.backgroundColor == nil){
+            [button setBackgroundColor:(tintColor == nil)? defaultButtonColor : tintColor];
+        }
+        
         button.titleLabel.font = buttonFont;
         button.frame = CGRectMake(0, (margin+itemHeight)*[itemsArray count], itemWidth, itemHeight);
         button.layer.cornerRadius = cornerRadius;
@@ -163,7 +173,7 @@ typedef void (^CloseAlertBlock)(void);
                                                         type:UIButtonTypeSystem];
     [button addActionTarget:self];
     [button setTitleColor:buttonTitleColor forState: UIControlStateNormal];
-    [button setBackgroundColor:tintColor];
+    [button setBackgroundColor:(tintColor == nil)? defaultButtonColor : tintColor];
     button.titleLabel.font = buttonFont;
     button.frame = CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight);
     button.layer.cornerRadius = cornerRadius;    
@@ -179,6 +189,7 @@ typedef void (^CloseAlertBlock)(void);
     
     height = cancelButton.frame.origin.y + cancelButton.frame.size.height+margin;
     posY = (screenRect.size.height - height)/2;
+    posX = (screenRect.size.width - width)/2;
     UIView *alertBgView = [[UIView alloc] initWithFrame:CGRectMake(posX, posY, width, height)];
     alertBgView.backgroundColor = [UIColor whiteColor];
     alertBgView.layer.cornerRadius = cornerRadius;
@@ -193,9 +204,29 @@ typedef void (^CloseAlertBlock)(void);
     [alertBgView addSubview:itemView];
     [alertBgView addSubview:cancelButton];
     
-    return alertBgView;
+    return (osVersion < 8.0f)? [self lotateView:alertBgView] : alertBgView;
 }
 
+- (UIView*)lotateView:(UIView*)view
+{
+    switch([[UIApplication sharedApplication] statusBarOrientation])
+    {
+        case UIInterfaceOrientationPortrait:
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            view.layer.transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            view.layer.transform = CATransform3DMakeRotation(90.0 / 180.0 * (-1) * M_PI, 0.0, 0.0, 1.0);
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            view.layer.transform = CATransform3DMakeRotation(90.0 / 180.0 * M_PI, 0.0, 0.0, 1.0);
+            break;
+        case UIInterfaceOrientationUnknown:
+            break;
+    }
+    return view;
+}
 
 - (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor
 {
@@ -256,7 +287,6 @@ typedef void (^CloseAlertBlock)(void);
 #pragma mark - call methods (show)
 + (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor *)tintColor
 {
-    if(tintColor == nil){ tintColor = [[UIColor alloc] initWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];}
     PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items tintColor:tintColor];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:alert.view];
     
@@ -285,10 +315,12 @@ typedef void (^CloseAlertBlock)(void);
     return button;
 }
 
-//+ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor
-//{
-//    return nil;
-//}
++ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type backgoundColor:(UIColor*)backgroundColor
+{
+    PKAlertButton* button = [PKAlert generateButtonWithTitle:title action:action type:type];
+    [button setBackgroundColor:backgroundColor];
+    return button;
+}
 
 @end
 
@@ -319,11 +351,7 @@ typedef void (^CloseAlertBlock)(void);
 //@override
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
-    
-    if (highlighted) {
-        self.alpha = 0.6;
-    }
-    
+    self.alpha = (highlighted)? 0.6 : 1.0;
 }
 
 - (void)dealloc

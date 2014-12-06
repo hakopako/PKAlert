@@ -2,7 +2,7 @@
 //  ViewController.h
 //  PKAlert
 //
-//  Created by shimada on 2014/11/29.
+//  Created by hakopako on 2014/11/29.
 //  Copyright (c) 2014年 hakopako. All rights reserved.
 //
 

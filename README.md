@@ -3,16 +3,14 @@ PKAlert
 
 Simple and easy alert generator written with objective c
 
-<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.gif">
-<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert-SipmleAlert.png">
-<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert-OptionAlert.png">
+<video src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.mp4"></video> 
 
 ## Usage
 1. Add `PKAlert.h`,`PKAlert.m` to your project.
 2. `#import "PKAlert.h"` 
 3. call method like so
-```
-#simple alert
+
+```objectice-c:simpleAlert
 [PKAlert showWithTitle:@"Notice" //NSString or nil
                   text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" //NSString or nil
       cancelButtonText:@"O K" //NSString or nil
@@ -20,23 +18,23 @@ Simple and easy alert generator written with objective c
              tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000] //UIColor or nil
 ];
 ```
-```
-#option alert
+
+```objectice-c:optionAlert
 [PKAlert showWithTitle:@"Success!!"
                   text:@"XXXX is completed successfuly.\n check ooooo now!"
       cancelButtonText:@"Cancel"
                  items:@[
-                         [PKAlert generateButtonWithTitle:@"Bar"
+                         [PKAlert generateButtonWithTitle:@"Bar" //backgoundColor button is generated.
                                                    action:^(){
                                                        NSLog(@"Bar is clicked.");
                                                    }
-                                                     type:UIButtonTypeSystem],
-                         [PKAlert generateButtonWithTitle:@"Foo"
+                                                     type:UIButtonTypeSystem
+                                           backgoundColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]],
+                         [PKAlert generateButtonWithTitle:@"Foo" //tintColor button is generated.
                                                    action:^(){
                                                        NSLog(@"Foo is clicked.");
                                                    }
-                                                     type:UIButtonTypeSystem]
-                         ]
+                                                     type:UIButtonTypeSystem]]
              tintColor:nil];
 ```
 

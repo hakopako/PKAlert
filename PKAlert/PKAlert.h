@@ -36,7 +36,7 @@
 
 #pragma mark - call methods (generate)
 + (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
-//+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor fontColor:(UIColor*)fontColor;
++ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type backgoundColor:(UIColor*)backgroundColor;
 
 
 @end
