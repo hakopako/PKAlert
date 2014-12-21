@@ -5,6 +5,9 @@ Simple and easy alert generator written with objective c.
 Target: ios7 or later. 
 
 <img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlert.gif"/>
+  
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlertDefaultStyle.png"/>
+<img src="https://raw.githubusercontent.com/hakopako/PKAlert/master/PKAlertSample/PKAlertRectangleStyle.png"/>
 
 ## Usage
 1. Add `PKAlert.h`,`PKAlert.m` to your project.
@@ -32,13 +35,24 @@ Target: ios7 or later.
                                                        NSLog(@"Bar is clicked.");
                                                    }
                                                      type:UIButtonTypeSystem
-                                           backgoundColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]],
+                                                tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000]],
                          [PKAlert generateButtonWithTitle:@"Foo" //tintColor button is generated.
                                                    action:^(){
                                                        NSLog(@"Foo is clicked.");
                                                    }
                                                      type:UIButtonTypeSystem]]
              tintColor:nil];
+```
+  
+  
+  
+UI type
+
+```obj-c
+typedef enum:NSInteger {
+    PKAlertStyleDefault,
+    PKAlertStyleRectangle
+} PKAlertStyle;
 ```
 
  

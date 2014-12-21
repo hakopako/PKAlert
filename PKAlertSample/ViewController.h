@@ -12,11 +12,16 @@
 {
 
     __weak IBOutlet UIButton *simpleAlertButton;
+    __weak IBOutlet UIButton *twoOptionsAlertButton;
     __weak IBOutlet UIButton *optionAlertButton;
 }
 
 - (IBAction)simpleAlertButtonDown:(id)sender;
+- (IBAction)twoOptionsAlertButtonDown:(id)sender;
 - (IBAction)optionAlertButtonDown:(id)sender;
+- (IBAction)rectSimpleAlertButtonDown:(id)sender;
+- (IBAction)rectTwoOptionsAlertButtonDown:(id)sender;
+- (IBAction)rectOptionsAlertButtonDown:(id)sender;
 
 @end
 

@@ -27,16 +27,20 @@
  ***************************************************************************/
 
 #import <UIKit/UIKit.h>
+typedef enum:NSInteger {
+    PKAlertStyleDefault,
+    PKAlertStyleRectangle
+} PKAlertStyle;
 
 @class PKAlertButton;
 @interface PKAlert : UIViewController
 
 #pragma mark - call methods (show)
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor;
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items style:(PKAlertStyle)style tintColor:(UIColor*)tintColor;
 
 #pragma mark - call methods (generate)
 + (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type;
-+ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type backgoundColor:(UIColor*)backgroundColor;
++ (NSDictionary*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor;
 
 
 @end

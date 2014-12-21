@@ -28,39 +28,160 @@
                                     <action selector="simpleAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ryg-l7-pGs"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PKAlert Example" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMX-xv-74n">
-                                <rect key="frame" x="236" y="20" width="129" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PKAlert Example - Default style -" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMX-xv-74n">
+                                <rect key="frame" x="172" y="20" width="256" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="129" id="ozD-Gj-Ft3"/>
+                                    <constraint firstAttribute="height" constant="21" id="uhv-Xr-aMe"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ozD-Gj-Ft3"/>
+                                        <exclude reference="uhv-Xr-aMe"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="ozD-Gj-Ft3"/>
+                                        <include reference="uhv-Xr-aMe"/>
+                                    </mask>
+                                </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="elP-fq-cSv">
-                                <rect key="frame" x="259" y="87" width="83" height="30"/>
-                                <state key="normal" title="Option Alert">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="elP-fq-cSv">
+                                <rect key="frame" x="241" y="125" width="119" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="Cao-qP-8X2"/>
+                                    <constraint firstAttribute="height" constant="30" id="hMA-Ud-TTt"/>
+                                </constraints>
+                                <state key="normal" title="Options Alert">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Cao-qP-8X2"/>
+                                        <exclude reference="hMA-Ud-TTt"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="Cao-qP-8X2"/>
+                                        <include reference="hMA-Ud-TTt"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="optionAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YP1-QB-Kfa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BBr-es-Bu2">
+                                <rect key="frame" x="239" y="87" width="122" height="30"/>
+                                <state key="normal" title="2 Options Alert">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="twoOptionsAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="92R-bg-ALm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8K7-es-8zQ">
+                                <rect key="frame" x="259" y="208" width="83" height="30"/>
+                                <state key="normal" title="Simple Alert">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="rectSimpleAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="v9P-2E-Gyo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYY-Jb-SBY">
+                                <rect key="frame" x="241" y="284" width="119" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="bLJ-EJ-jdU"/>
+                                    <constraint firstAttribute="width" constant="90" id="gDJ-Q0-69O"/>
+                                </constraints>
+                                <state key="normal" title="Options Alert">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gDJ-Q0-69O"/>
+                                        <exclude reference="bLJ-EJ-jdU"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="gDJ-Q0-69O"/>
+                                        <include reference="bLJ-EJ-jdU"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="rectOptionsAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QmR-I9-unT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIQ-HO-up3">
+                                <rect key="frame" x="239" y="246" width="122" height="30"/>
+                                <state key="normal" title="2 Options Alert">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="rectTwoOptionsAlertButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RVy-kf-EeL"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="PKAlert Example - Rectangle style -" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAw-ca-IP2">
+                                <rect key="frame" x="149" y="179" width="303" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="129" id="0PV-Zw-Cas"/>
+                                    <constraint firstAttribute="height" constant="21" id="cbz-7o-p1x"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="0PV-Zw-Cas"/>
+                                        <exclude reference="cbz-7o-p1x"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="0PV-Zw-Cas"/>
+                                        <include reference="cbz-7o-p1x"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="elP-fq-cSv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="T8P-Ca-AqP"/>
-                            <constraint firstItem="OMX-xv-74n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="cnm-rv-xlH"/>
-                            <constraint firstItem="QoK-3w-kPO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="j54-Ow-gPY"/>
-                            <constraint firstItem="QoK-3w-kPO" firstAttribute="top" secondItem="OMX-xv-74n" secondAttribute="bottom" constant="8" id="rFi-GD-H9M"/>
-                            <constraint firstItem="elP-fq-cSv" firstAttribute="top" secondItem="QoK-3w-kPO" secondAttribute="bottom" constant="8" id="z8K-0R-q9l"/>
-                            <constraint firstItem="OMX-xv-74n" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="zkC-1D-eJi"/>
+                            <constraint firstItem="zIQ-HO-up3" firstAttribute="top" secondItem="8K7-es-8zQ" secondAttribute="bottom" constant="8" id="4NY-Xe-f24"/>
+                            <constraint firstItem="BBr-es-Bu2" firstAttribute="top" secondItem="QoK-3w-kPO" secondAttribute="bottom" constant="8" id="58z-ma-qUE"/>
+                            <constraint firstItem="cAw-ca-IP2" firstAttribute="top" secondItem="elP-fq-cSv" secondAttribute="bottom" constant="24" id="CK4-ob-QQO"/>
+                            <constraint firstItem="elP-fq-cSv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="DmD-Pn-NJI"/>
+                            <constraint firstItem="BBr-es-Bu2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="IaI-tb-lIQ"/>
+                            <constraint firstItem="OMX-xv-74n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="KzE-Vs-JsM"/>
+                            <constraint firstItem="RYY-Jb-SBY" firstAttribute="top" secondItem="zIQ-HO-up3" secondAttribute="bottom" constant="8" id="NXK-s2-bGH"/>
+                            <constraint firstItem="cAw-ca-IP2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="S5P-rn-8Zk"/>
+                            <constraint firstItem="zIQ-HO-up3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="U8z-04-jmQ"/>
+                            <constraint firstItem="8K7-es-8zQ" firstAttribute="top" secondItem="cAw-ca-IP2" secondAttribute="bottom" constant="8" id="VGF-0u-sfE"/>
+                            <constraint firstItem="8K7-es-8zQ" firstAttribute="top" secondItem="cAw-ca-IP2" secondAttribute="bottom" constant="8" id="d9t-h9-J25"/>
+                            <constraint firstItem="8K7-es-8zQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="gC4-0X-DkL"/>
+                            <constraint firstItem="QoK-3w-kPO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="iIs-JH-7BH"/>
+                            <constraint firstItem="elP-fq-cSv" firstAttribute="top" secondItem="BBr-es-Bu2" secondAttribute="bottom" constant="8" id="iZu-bO-iRH"/>
+                            <constraint firstItem="zIQ-HO-up3" firstAttribute="top" secondItem="8K7-es-8zQ" secondAttribute="bottom" constant="8" id="mgW-sy-IRg"/>
+                            <constraint firstItem="QoK-3w-kPO" firstAttribute="top" secondItem="OMX-xv-74n" secondAttribute="bottom" constant="8" id="nbc-9F-ioa"/>
+                            <constraint firstItem="OMX-xv-74n" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="pWu-ix-tcz"/>
+                            <constraint firstItem="RYY-Jb-SBY" firstAttribute="top" secondItem="zIQ-HO-up3" secondAttribute="bottom" constant="8" id="pcM-lE-pb0"/>
+                            <constraint firstItem="RYY-Jb-SBY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" id="xgH-nj-C5q"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="optionAlertButton" destination="elP-fq-cSv" id="UIa-RR-8CX"/>
                         <outlet property="simpleAlertButton" destination="QoK-3w-kPO" id="zi4-95-2Km"/>
+                        <outlet property="twoOptionsAlertButton" destination="BBr-es-Bu2" id="THx-tm-dqg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="140" y="140"/>
         </scene>
     </scenes>
 </document>

@@ -22,15 +22,12 @@ typedef void (^CloseAlertBlock)(void);
     PKAlert *pkAlert;
     NSArray *pkAlertButtons;
     CGRect screenRect;
+    UIView *alertView;
+    
     float osVersion;
-    float width;
-    float height;
-    float posX;
-    float posY;
-    float margin;
-    float itemWidth;
-    float itemHeight;
-    float cornerRadius;
+    float alertViewWidth;
+    float alertViewHeight;
+    
     UIFont *titleFont;
     UIColor *titleColor;
     UIFont *textFont;
@@ -38,34 +35,194 @@ typedef void (^CloseAlertBlock)(void);
     UIFont *buttonFont;
     UIColor *buttonTitleColor;
     UIColor *defaultButtonColor;
+    UIColor *defaultLineColor;
 }
 
 @property (nonatomic) PKAlert *pkAlert;
 @property (nonatomic) NSArray *pkAlertButtons;
+@property (nonatomic) UIView *alertView;
 
 @end
 
-#pragma mark - LifeCycle
 @implementation PKAlert
 
 @synthesize pkAlert;
 @synthesize pkAlertButtons;
+@synthesize alertView;
 
+#pragma mark - UI
+/**
+ * Default style alert UI
+ * @param UILabel titleLabel
+ * @param UILabel textLabel
+ * @param UIButton cancelButton
+ * @param NSArray<PKAlertButton> itemArray
+ */
+- (void)defaultStyleAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(NSArray*)itemArray
+{
+    alertViewWidth = 260;
+    float margin = 8;
+    float itemWidth = alertViewWidth - margin * 2;
+    float itemHeight = 44;
+    float cornerRadius = 12;
+    
+    //title
+    titleLabel.frame = CGRectMake(margin, margin, itemWidth, itemHeight);
+    
+    //text
+    textLabel.frame = CGRectMake(margin, titleLabel.frame.origin.y + titleLabel.frame.size.height + margin, itemWidth, textLabel.frame.size.height);
+    [textLabel sizeToFit];
+    CGRect textLabelFrame = textLabel.frame;
+    textLabelFrame.size.width = itemWidth;
+    textLabelFrame.size.height = textLabel.frame.size.height + margin*2;
+    textLabel.frame = textLabelFrame;
+    
+    //itemButtons
+    float btnPosY = textLabel.frame.origin.y + textLabel.frame.size.height + margin;
+    CGRect rectButtonMask;
+    if([itemArray count] == 1){
+        PKAlertButton *button = [itemArray objectAtIndex:0];
+        button.frame = CGRectMake(alertViewWidth/2-1, btnPosY, alertViewWidth/2+2, itemHeight+2);
+        
+        rectButtonMask = CGRectMake(button.bounds.origin.x, button.bounds.origin.y, button.bounds.size.width-1, button.bounds.size.height-1);
+        UIBezierPath *maskPath;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:rectButtonMask
+                                         byRoundingCorners:UIRectCornerBottomRight
+                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+        
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = button.bounds;
+        maskLayer.path = maskPath.CGPath;
+        button.layer.mask = maskLayer;
+        
+        [[button layer] setBorderColor:[defaultLineColor CGColor]];
+        [[button layer] setBorderWidth:1.0];
+        
+        UIColor *buttonTint = button.backgroundColor;
+        UIColor *alertTint = alertView.backgroundColor;
+        [button setBackgroundColor:alertTint];
+        [button setTitleColor:buttonTint forState:UIControlStateNormal];
+        
+    } else {
+        for(int i=0; i<[itemArray count]; i++){
+            PKAlertButton *button = [itemArray objectAtIndex:i];
+            button.frame = CGRectMake(0, btnPosY + itemHeight*i, alertViewWidth+1, itemHeight+1);
+            
+            rectButtonMask = CGRectMake(button.bounds.origin.x+1, button.bounds.origin.y, button.bounds.size.width-2, button.bounds.size.height-1);
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRect:rectButtonMask];
+            CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+            maskLayer.frame = button.bounds;
+            maskLayer.path = maskPath.CGPath;
+            button.layer.mask = maskLayer;
+            
+            [[button layer] setBorderColor:[defaultLineColor CGColor]];
+            [[button layer] setBorderWidth:1.0];
+            
+            UIColor *buttonTint = button.backgroundColor;
+            UIColor *alertTint = alertView.backgroundColor;
+            [button setBackgroundColor:alertTint];
+            [button setTitleColor:buttonTint forState:UIControlStateNormal];
+        }
+    }
+
+
+    
+    //cancelButton
+    CGRect rectCancelButtonMask;
+    if([itemArray count] == 1){
+        cancelButton.frame = CGRectMake(0, btnPosY, alertViewWidth/2+1, itemHeight+1);
+        rectCancelButtonMask = CGRectMake(cancelButton.bounds.origin.x+1, cancelButton.bounds.origin.y, cancelButton.bounds.size.width-2, cancelButton.bounds.size.height-1);
+        UIBezierPath *maskPath;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:rectCancelButtonMask
+                                         byRoundingCorners:UIRectCornerBottomLeft
+                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+        
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = cancelButton.bounds;
+        maskLayer.path = maskPath.CGPath;
+        cancelButton.layer.mask = maskLayer;
+    } else {
+        cancelButton.frame = CGRectMake(0, btnPosY + itemHeight*[itemArray count], alertViewWidth, itemHeight);
+        rectCancelButtonMask = CGRectMake(cancelButton.bounds.origin.x+1, cancelButton.bounds.origin.y, cancelButton.bounds.size.width-2, cancelButton.bounds.size.height-1);
+        UIBezierPath *maskPath;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:rectCancelButtonMask
+                                         byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerBottomRight)
+                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+        
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = cancelButton.bounds;
+        maskLayer.path = maskPath.CGPath;
+        cancelButton.layer.mask = maskLayer;
+    }
+    UIColor *buttonTint = cancelButton.backgroundColor;
+    UIColor *alertTint = alertView.backgroundColor;
+    [cancelButton setBackgroundColor:alertTint];
+    [cancelButton setTitleColor:buttonTint forState:UIControlStateNormal];
+    
+    [[cancelButton layer] setBorderColor:[defaultLineColor CGColor]];
+    [[cancelButton layer] setBorderWidth:1.0];
+    
+    //alertView
+    alertView.backgroundColor = [UIColor whiteColor];
+    alertView.layer.cornerRadius = cornerRadius;
+    alertViewHeight = cancelButton.frame.origin.y + cancelButton.frame.size.height;
+}
+
+
+/**
+ * Rectangle style alert UI
+ * @param UILabel titleLabel
+ * @param UILabel textLabel
+ * @param UIButton cancelButton
+ * @param NSArray<PKAlertButton> itemArray
+ */
+- (void)rectangleStyleAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(NSArray*)itemArray
+{
+    alertViewWidth = 260;
+    float margin = 8;
+    float itemWidth = alertViewWidth - margin * 2;
+    float itemHeight = 44;
+    float cornerRadius = 1;
+    
+    //title
+    titleLabel.frame = CGRectMake(margin, margin, itemWidth, itemHeight);
+    
+    //text
+    textLabel.frame = CGRectMake(margin, titleLabel.frame.origin.y + titleLabel.frame.size.height + margin, itemWidth, textLabel.frame.size.height);
+    [textLabel sizeToFit];
+    CGRect textLabelFrame = textLabel.frame;
+    textLabelFrame.size.width = itemWidth;
+    textLabelFrame.size.height = textLabel.frame.size.height + margin*2;
+    textLabel.frame = textLabelFrame;
+    
+    //itemButtons
+    float btnPosY = textLabel.frame.origin.y + textLabel.frame.size.height + margin;
+    for(int i=0; i<[itemArray count]; i++){
+        PKAlertButton *button = [itemArray objectAtIndex:i];
+        button.frame = CGRectMake(margin, btnPosY + (margin + itemHeight)*i, itemWidth, itemHeight);
+    }
+    
+    //cancelButton
+    cancelButton.frame = CGRectMake(margin, btnPosY + (margin + itemHeight)*[itemArray count], itemWidth, itemHeight);
+
+    //alertView
+    alertView.backgroundColor = [UIColor whiteColor];
+    alertView.layer.cornerRadius = cornerRadius;
+    alertViewHeight = cancelButton.frame.origin.y + cancelButton.frame.size.height + margin;
+}
+
+#pragma mark - LifeCycle
 - (instancetype)init
 {
     self = [super init];
     if(self){
         //defaults
         screenRect = [[UIScreen mainScreen] bounds];
-        width = 280;
-        height = 180;
-        posX = (screenRect.size.width - width)/2;
-        posY = (screenRect.size.height - height)/2;
-        margin = 8;
-        itemWidth = width-margin*2;
-        itemHeight = 44;
-        cornerRadius = 3.0f;
         
+        alertViewWidth = 280;
+        alertViewHeight = 180;
+        
+        alertView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         titleFont = [UIFont systemFontOfSize:21];
         titleColor = [[UIColor alloc] initWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f];
         textFont = [UIFont systemFontOfSize:13];
@@ -73,6 +230,7 @@ typedef void (^CloseAlertBlock)(void);
         buttonFont = [UIFont systemFontOfSize:17];
         buttonTitleColor = [UIColor whiteColor];
         defaultButtonColor = [[UIColor alloc] initWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
+        defaultLineColor = [[UIColor alloc] initWithRed:0.9f green:0.9f blue:0.9f alpha:1.0f];
         
         osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
         
@@ -97,13 +255,7 @@ typedef void (^CloseAlertBlock)(void);
 #pragma mark - instance methods
 - (UILabel*)generateTitleLabelWithString:(NSString*)title
 {
-    if(title == nil){
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight/2)];
-        titleLabel.text = @"";
-        return titleLabel;
-    }
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
+    UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
     titleLabel.font = titleFont;
     titleLabel.textColor = titleColor;
@@ -114,24 +266,17 @@ typedef void (^CloseAlertBlock)(void);
 
 - (UILabel*)generateTextLabelWithString:(NSString*)text
 {
-    if(text == nil){
-        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight/2)];
-        textLabel.text = @"";
-        return textLabel;
-    }
-    
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight)];
+    UILabel *textLabel = [[UILabel alloc] init];
     textLabel.numberOfLines = 0;
     textLabel.text = text;
     textLabel.font = textFont;
     textLabel.textColor = textColor;
     textLabel.textAlignment = NSTextAlignmentCenter;
-    [textLabel sizeToFit];
     
     return textLabel;
 }
 
-- (UIView*)generateItems:(NSArray*)items tintColor:(UIColor*)tintColor
+- (NSArray*)generateItems:(NSArray*)items tintColor:(UIColor*)tintColor
 {
     NSMutableArray *itemsArray = [[NSMutableArray alloc]init];
     for(int i=0; i<[items count]; i++){
@@ -148,19 +293,10 @@ typedef void (^CloseAlertBlock)(void);
         }
         
         button.titleLabel.font = buttonFont;
-        button.frame = CGRectMake(0, (margin+itemHeight)*[itemsArray count], itemWidth, itemHeight);
-        button.layer.cornerRadius = cornerRadius;
-        
         [itemsArray addObject:button];
     }
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, itemWidth, (margin+itemHeight)*[itemsArray count])];
-    
-    for(int i=0; i<[itemsArray count]; i++){
-        [view addSubview:[itemsArray objectAtIndex:i]];
-    }
-    
-    return view;
+    return itemsArray;
 }
 
 
@@ -174,37 +310,47 @@ typedef void (^CloseAlertBlock)(void);
     [button addActionTarget:self];
     [button setTitleColor:buttonTitleColor forState: UIControlStateNormal];
     [button setBackgroundColor:(tintColor == nil)? defaultButtonColor : tintColor];
-    button.titleLabel.font = buttonFont;
-    button.frame = CGRectMake(margin, margin+itemHeight, itemWidth, itemHeight);
-    button.layer.cornerRadius = cornerRadius;    
+    button.titleLabel.font = buttonFont;   
     return button;
 }
 
-- (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(UIView*)itemView
+- (UIView*)generateAlertView:(UILabel*)titleLabel textLabel:(UILabel*)textLabel cancelButton:(UIButton*)cancelButton items:(NSArray*)itemArray style:(PKAlertStyle)style
 {
-    titleLabel.frame = CGRectMake(margin, margin, itemWidth, titleLabel.frame.size.height);
-    textLabel.frame = CGRectMake(margin, titleLabel.frame.origin.y + titleLabel.frame.size.height + margin, itemWidth, textLabel.frame.size.height + margin);
-    itemView.frame = CGRectMake(margin, margin+textLabel.frame.origin.y + textLabel.frame.size.height + margin, itemWidth, itemView.frame.size.height);
-    cancelButton.frame = CGRectMake(margin, itemView.frame.origin.y + itemView.frame.size.height, itemWidth, cancelButton.frame.size.height);
+    switch (style) {
+        case PKAlertStyleRectangle:
+        {
+            [self rectangleStyleAlertView:titleLabel textLabel:textLabel cancelButton:cancelButton items:itemArray];
+            break;
+        }
+        case PKAlertStyleDefault:
+        {
+            [self defaultStyleAlertView:titleLabel textLabel:textLabel cancelButton:cancelButton items:itemArray];
+            break;
+        }
+    }
     
-    height = cancelButton.frame.origin.y + cancelButton.frame.size.height+margin;
-    posY = (screenRect.size.height - height)/2;
-    posX = (screenRect.size.width - width)/2;
-    UIView *alertBgView = [[UIView alloc] initWithFrame:CGRectMake(posX, posY, width, height)];
-    alertBgView.backgroundColor = [UIColor whiteColor];
-    alertBgView.layer.cornerRadius = cornerRadius;
-    alertBgView.layer.masksToBounds = NO;
-    alertBgView.layer.shadowOffset = CGSizeMake(0, 8);
-    alertBgView.layer.shadowOpacity = 0.2f;
-    alertBgView.layer.shadowColor = [UIColor blackColor].CGColor;
-    alertBgView.layer.shadowRadius = 8.0f;
+    CGRect rect = alertView.frame;
+    rect.origin.x = (screenRect.size.width - alertViewWidth)/2;
+    rect.origin.y = (screenRect.size.height - alertViewHeight)/2;
+    rect.size.width = alertViewWidth;
+    rect.size.height = alertViewHeight;
+    alertView.frame = rect;
     
-    [alertBgView addSubview:titleLabel];
-    [alertBgView addSubview:textLabel];
-    [alertBgView addSubview:itemView];
-    [alertBgView addSubview:cancelButton];
-    
-    return (osVersion < 8.0f)? [self lotateView:alertBgView] : alertBgView;
+    [alertView addSubview:titleLabel];
+    [alertView addSubview:textLabel];
+    for(int i=0; i<[itemArray count]; i++){
+        PKAlertButton *button = [itemArray objectAtIndex:i];
+        [alertView addSubview:button];
+    }
+    [alertView addSubview:cancelButton];
+
+    alertView.layer.masksToBounds = NO;
+    alertView.layer.shadowOffset = CGSizeMake(0, 8);
+    alertView.layer.shadowOpacity = 0.2f;
+    alertView.layer.shadowColor = [UIColor blackColor].CGColor;
+    alertView.layer.shadowRadius = 8.0f;
+
+    return (osVersion < 8.0f)? [self lotateView:alertView] : alertView;
 }
 
 - (UIView*)lotateView:(UIView*)view
@@ -228,16 +374,19 @@ typedef void (^CloseAlertBlock)(void);
     return view;
 }
 
-- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor*)tintColor
+- (PKAlert*)setWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items style:(PKAlertStyle)style tintColor:(UIColor*)tintColor
 {
-    UIView *bgView = [PKAlert generateBackGroundView];
-    UIView *alertView = [self generateAlertView:[self generateTitleLabelWithString:title]
+    UIView *bg = [PKAlert generateBackGroundView];
+    UIView *av = [self generateAlertView:[self generateTitleLabelWithString:title]
                                       textLabel:[self generateTextLabelWithString:text]
                                    cancelButton:[self generateCancelButtonWithTitle:cancelButtonText tintColor:tintColor]
-                                          items:[self generateItems:items tintColor:tintColor]];
+                                          items:[self generateItems:items tintColor:tintColor]
+                                          style:style];
     
-    [bgView addSubview:alertView];
-    [self.view addSubview:bgView];
+    [bg addSubview:av];
+    [av sizeToFit];
+    
+    [self.view addSubview:bg];
     
     pkAlert = self;
     pkAlertButtons = items;
@@ -285,11 +434,11 @@ typedef void (^CloseAlertBlock)(void);
 
 
 #pragma mark - call methods (show)
-+ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items tintColor:(UIColor *)tintColor
++ (void)showWithTitle:(NSString*)title text:(NSString*)text cancelButtonText:(NSString*)cancelButtonText items:(NSArray*)items style:(PKAlertStyle)style tintColor:(UIColor *)tintColor
 {
-    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items tintColor:tintColor];
+    PKAlert *alert = [[[PKAlert alloc] init] setWithTitle:title text:text cancelButtonText:cancelButtonText items:items style:style tintColor:tintColor];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:alert.view];
-    alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.03, 1.03);
+    alert.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.05, 1.05);
     
     [UIView animateWithDuration:0.1
                      animations:^{
@@ -310,10 +459,10 @@ typedef void (^CloseAlertBlock)(void);
     return button;
 }
 
-+ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type backgoundColor:(UIColor*)backgroundColor
++ (PKAlertButton*)generateButtonWithTitle:(NSString*)title action:(void(^)())action type:(UIButtonType)type tintColor:(UIColor*)tintColor
 {
     PKAlertButton* button = [PKAlert generateButtonWithTitle:title action:action type:type];
-    [button setBackgroundColor:backgroundColor];
+    [button setBackgroundColor:tintColor];
     return button;
 }
 
