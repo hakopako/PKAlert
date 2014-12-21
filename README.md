@@ -20,6 +20,7 @@ Target: ios7 or later.
                   text:@"hogehogehoghoe\nhugahuga\nIs this ok?\n\n\nhahahaha" //NSString or nil
       cancelButtonText:@"O K" //NSString or nil
                  items:nil 
+                 style:PKAlertStyleDefault
              tintColor:[UIColor colorWithRed:0.5 green:0.849 blue:0.9 alpha:1.000] //UIColor or nil
 ];
 ```
@@ -41,6 +42,7 @@ Target: ios7 or later.
                                                        NSLog(@"Foo is clicked.");
                                                    }
                                                      type:UIButtonTypeSystem]]
+                 style:PKAlertStyleDefault
              tintColor:nil];
 ```
   
